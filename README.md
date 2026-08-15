@@ -105,44 +105,24 @@ STORAGE_ACCOUNT_NAME
 
 Never commit credentials or Terraform state files to GitHub.
 
-## 🧪 Local Terraform Deployment
-
-Navigate to the Terraform directory:
-
-```bash
-cd terraform
-```
-
-Initialize Terraform:
 
 ```bash
 terraform init
 ```
-
 Validate the configuration:
 
 ```bash
 terraform validate
 ```
-
-Format the Terraform files:
-
-```bash
-terraform fmt
-```
-
 Create a plan:
 
 ```bash
-terraform plan \
-  -var="storage_account_name=YOUR_UNIQUE_STORAGE_NAME"
+terraform plan
 ```
-
 Deploy:
 
 ```bash
-terraform apply \
-  -var="storage_account_name=YOUR_UNIQUE_STORAGE_NAME"
+terraform apply
 ```
 
 Get the website URL:
