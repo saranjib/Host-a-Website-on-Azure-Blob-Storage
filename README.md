@@ -2,7 +2,9 @@
 A hands-on Azure cloud project demonstrating how to host a static website using **Azure Blob Storage**, provision infrastructure with **Terraform**, and automatically deploy website changes using **GitHub Actions**.
 
 
-### Architecture
+## Architecture Diagram
+
+![Architecture](architecture.png)
 
 
 ## 🛠️ Technologies Used
