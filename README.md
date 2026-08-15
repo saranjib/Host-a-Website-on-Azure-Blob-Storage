@@ -106,6 +106,8 @@ STORAGE_ACCOUNT_NAME
 Never commit credentials or Terraform state files to GitHub.
 
 
+## 🧪 Local Terraform Deployment
+
 ```bash
 terraform init
 ```
@@ -188,25 +190,3 @@ After completing this project, you will understand:
 * Cloud deployment automation
 * Infrastructure destruction
 
-## 💼 Resume Description
-
-**Host a Website on Azure Blob Storage**
-
-> Designed and deployed a static website using Azure Blob Storage and automated the infrastructure provisioning with Terraform. Implemented a GitHub Actions CI/CD pipeline using GitHub OIDC authentication to automatically provision Azure infrastructure and deploy website files. Added an automated Terraform destroy workflow for infrastructure lifecycle management.
-
-## 🔮 Future Improvements
-
-Possible enhancements include:
-
-* Azure CDN / Front Door
-* Custom domain
-* HTTPS
-* Azure DNS
-* Azure Monitor
-* Application Insights
-* Storage access logging
-* Terraform remote state
-* Environment separation
-* Pull-request Terraform plan
-* Security scanning
-* Cost monitoring
