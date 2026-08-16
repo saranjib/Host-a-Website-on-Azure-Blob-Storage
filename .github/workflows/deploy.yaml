@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-
   workflow_dispatch:
 
 permissions:
@@ -12,7 +11,65 @@ permissions:
   contents: read
 
 jobs:
-
   terraform:
     name: Terraform Infrastructure
     runs-on: ubuntu-latest
+
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_USE_OIDC: "true"
+
+    defaults:
+      run:
+        working-directory: terraform
+
+    # Define job outputs to pass the dynamically generated name to other jobs
+    outputs:
+      storage_account_name: ${{ steps.get_name.outputs.STORAGE_NAME }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+
+      # Capture the dynamically generated Terraform output
+      - name: Export Storage Account Name
+        id: get_name
+        run: |
+          echo "STORAGE_NAME=$(terraform output -raw storage_account_name)" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    name: Deploy Website
+    runs-on: ubuntu-latest
+    needs: terraform
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      # Uses the dynamic output from the terraform job
+      - name: Upload Website
+        run: |
+          az storage blob upload-batch \
+            --account-name "${{ needs.terraform.outputs.storage_account_name }}" \
+            --auth-mode login \
+            --destination '$web' \
+            --source ./website \
+            --overwrite
