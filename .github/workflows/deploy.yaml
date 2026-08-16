@@ -23,8 +23,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: /home/runner/work/Host-a-Website-on-Azure-Blob-Storage/host-website-on-azure-blob-storage/terraform
-
+        working-directory: terraform
     # Define job outputs to pass the dynamically generated name to other jobs
     outputs:
       storage_account_name: ${{ steps.get_name.outputs.STORAGE_NAME }}
@@ -71,5 +70,5 @@ jobs:
             --account-name "${{ needs.terraform.outputs.storage_account_name }}" \
             --auth-mode login \
             --destination '$web' \
-            --source /home/runner/work/Host-a-Website-on-Azure-Blob-Storage/host-website-on-azure-blob-storage/website \
+            --source ./website \
             --overwrite
