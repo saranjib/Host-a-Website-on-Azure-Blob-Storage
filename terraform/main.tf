@@ -9,20 +9,13 @@ resource "azurerm_resource_group" "host-web-blob-project" {
 # Azure Storage Account
 # ---------------------------------------------------------
 
-# Declare the random_string resource
-resource "random_string" "random" {
-  length  = 6
-  special = false
-  upper   = false
-}
-
 resource "azurerm_storage_account" "website-storage" {
-  name                     = "webhostproj${random_string.random.result}" # Must be globally unique
+  name                     = var.storage_account_name
   resource_group_name      = azurerm_resource_group.host-web-blob-project.name
   location                 = azurerm_resource_group.host-web-blob-project.location
+  account_kind             = "StorageV2"
   account_tier             = "Standard"
   account_replication_type = "LRS"
-
   min_tls_version = "TLS1_2"
 
   static_website {
