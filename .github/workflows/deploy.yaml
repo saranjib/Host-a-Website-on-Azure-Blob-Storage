@@ -23,7 +23,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: terraform
+        working-directory: infra
 
     # Define job outputs to pass the dynamically generated name to other jobs
     outputs:
