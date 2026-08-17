@@ -32,7 +32,7 @@ resource "azurerm_storage_account" "website-storage" {
 
 resource "azurerm_storage_blob" "website-blob-index" {
   name                   = "index.html"
-  storage_account_name   = azurerm_storage_account.website.name
+  storage_account_name   = azurerm_storage_account.website-storage.name
   storage_container_name = "$web"
   type                   = "Block"
 
@@ -42,7 +42,7 @@ resource "azurerm_storage_blob" "website-blob-index" {
 
 resource "azurerm_storage_blob" "website-blob-css" {
   name                   = "style.css"
-  storage_account_name   = azurerm_storage_account.website.name
+  storage_account_name   = azurerm_storage_account.website-storage.name
   storage_container_name = "$web"
   type                   = "Block"
 
@@ -52,7 +52,7 @@ resource "azurerm_storage_blob" "website-blob-css" {
 
 resource "azurerm_storage_blob" "website-blob-js" {
   name                   = "script.js"
-  storage_account_name   = azurerm_storage_account.website.name
+  storage_account_name   = azurerm_storage_account.website-storage.name
   storage_container_name = "$web"
   type                   = "Block"
 
