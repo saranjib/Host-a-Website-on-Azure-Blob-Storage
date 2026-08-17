@@ -32,12 +32,32 @@ resource "azurerm_storage_account" "website-storage" {
 
 resource "azurerm_storage_blob" "website-blob-index" {
   name                   = "index.html"
-  storage_account_name   = azurerm_storage_account.website-storage.name
+  storage_account_name   = azurerm_storage_account.website.name
   storage_container_name = "$web"
+  type                   = "Block"
 
-  type         = "Block"
-  source       = "${path.module}/website/index.html"
+  source       = "${path.module}/../website/index.html"
   content_type = "text/html"
+}
+
+resource "azurerm_storage_blob" "website-blob-css" {
+  name                   = "style.css"
+  storage_account_name   = azurerm_storage_account.website.name
+  storage_container_name = "$web"
+  type                   = "Block"
+
+  source       = "${path.module}/../website/style.css"
+  content_type = "text/css"
+}
+
+resource "azurerm_storage_blob" "website-blob-js" {
+  name                   = "script.js"
+  storage_account_name   = azurerm_storage_account.website.name
+  storage_container_name = "$web"
+  type                   = "Block"
+
+  source       = "${path.module}/../website/script.js"
+  content_type = "application/javascript"
 }
 
 # ---------------------------------------------------------
