@@ -39,6 +39,9 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
+      - name: Terraform Format
+        run: terraform fmt -check
+
       - name: Terraform Validate
         run: terraform validate
 
@@ -83,7 +86,7 @@ jobs:
             --account-name "${{ secrets.STORAGE_ACCOUNT_NAME }}" \
             --auth-mode login \
             --destination '$web' \
-            --source terraform/website \
+            --source ./website \
             --overwrite
 
       - name: Deployment Complete
