@@ -1,24 +1,32 @@
-name: Deploy Infrastructure and Website
+name: Deploy Website to Azure Blob Storage
 
 on:
   push:
     branches:
       - main
 
+  workflow_dispatch:
+
 permissions:
   id-token: write
   contents: read
 
 jobs:
+
   terraform:
-    name: "Terraform Apply"
+    name: Terraform Infrastructure
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: terraform
+
     steps:
-      - name: Checkout Code
+
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Azure CLI Login via OIDC
+      - name: Azure Login
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
@@ -31,5 +39,56 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
+      - name: Terraform Format
+        run: terraform fmt -check
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: |
+          terraform plan \
+            -var="storage_account_name=${{ secrets.STORAGE_ACCOUNT_NAME }}"
+
       - name: Terraform Apply
-        run: terraform apply -auto-approve
+        run: |
+          terraform apply \
+            -auto-approve \
+            -var="storage_account_name=${{ secrets.STORAGE_ACCOUNT_NAME }}"
+
+      - name: Get Storage Account
+        id: storage
+        run: |
+          echo "name=$(terraform output -raw storage_account_name)" >> "$GITHUB_OUTPUT"
+
+
+  deploy:
+    name: Deploy Website
+    runs-on: ubuntu-latest
+
+    needs: terraform
+
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Upload Website
+        run: |
+          az storage blob upload-batch \
+            --account-name "${{ secrets.STORAGE_ACCOUNT_NAME }}" \
+            --auth-mode login \
+            --destination '$web' \
+            --source ./website \
+            --overwrite
+
+      - name: Deployment Complete
+        run: |
+          echo "Website deployment completed successfully."
