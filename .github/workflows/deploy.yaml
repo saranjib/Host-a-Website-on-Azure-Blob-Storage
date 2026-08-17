@@ -83,7 +83,7 @@ jobs:
             --account-name "${{ secrets.STORAGE_ACCOUNT_NAME }}" \
             --auth-mode login \
             --destination '$web' \
-            --source ./website \
+            --source ../website \
             --overwrite
 
       - name: Deployment Complete
