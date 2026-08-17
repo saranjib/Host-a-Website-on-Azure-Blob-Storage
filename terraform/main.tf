@@ -18,10 +18,9 @@ resource "azurerm_storage_account" "website-storage" {
   account_replication_type = "LRS"
   min_tls_version = "TLS1_2"
 
-  static_website {
-    index_document = "index.html"
-    error_404_document = "index.html"
-  }
+   https_traffic_only_enabled = true
+
+  allow_nested_items_to_be_public = true
 
 }
 
@@ -38,6 +37,10 @@ resource "azurerm_storage_blob" "website-blob-index" {
 
   source       = "${path.module}/../website/index.html"
   content_type = "text/html"
+
+  depends_on = [
+    azurerm_storage_account_static_website.static_site
+  ]
 }
 
 resource "azurerm_storage_blob" "website-blob-css" {
@@ -48,6 +51,10 @@ resource "azurerm_storage_blob" "website-blob-css" {
 
   source       = "${path.module}/../website/style.css"
   content_type = "text/css"
+
+  depends_on = [
+    azurerm_storage_account_static_website.static_site
+  ]
 }
 
 resource "azurerm_storage_blob" "website-blob-js" {
@@ -58,8 +65,11 @@ resource "azurerm_storage_blob" "website-blob-js" {
 
   source       = "${path.module}/../website/script.js"
   content_type = "application/javascript"
-}
 
+  depends_on = [
+    azurerm_storage_account_static_website.static_site
+  ]
+}
 # ---------------------------------------------------------
 # Enable Static Website Hosting
 # ---------------------------------------------------------

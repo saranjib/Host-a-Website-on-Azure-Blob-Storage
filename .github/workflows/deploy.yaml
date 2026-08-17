@@ -1,4 +1,4 @@
-name: Deploy Website to Azure Blob Storage
+name: Deploy Website to Azure
 
 on:
   push:
@@ -12,23 +12,14 @@ permissions:
   contents: read
 
 jobs:
-
   deploy:
-    name: Deploy Azure Infrastructure and Website
     runs-on: ubuntu-latest
 
     steps:
 
-      # --------------------------------
-      # Checkout
-      # --------------------------------
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-
-      # --------------------------------
-      # Azure Login
-      # --------------------------------
       - name: Azure Login
         uses: azure/login@v2
         with:
@@ -36,13 +27,8 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-
-      # --------------------------------
-      # Terraform
-      # --------------------------------
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
-
 
       - name: Terraform Init
         working-directory: terraform
@@ -52,13 +38,11 @@ jobs:
         working-directory: terraform
         run: terraform validate
 
-
       - name: Terraform Plan
         working-directory: terraform
         run: |
           terraform plan \
             -var="storage_account_name=${{ secrets.STORAGE_ACCOUNT_NAME }}"
-
 
       - name: Terraform Apply
         working-directory: terraform
@@ -67,45 +51,10 @@ jobs:
             -auto-approve \
             -var="storage_account_name=${{ secrets.STORAGE_ACCOUNT_NAME }}"
 
-
-      # --------------------------------
-      # Verify Website Directory
-      # --------------------------------
-      - name: Verify Website Files
-        working-directory: ${{ github.workspace }}
-        run: |
-          echo "Current directory:"
-          pwd
-
-          echo "Repository contents:"
-          ls -la
-
-          echo "Website directory:"
-          ls -la ./website
-
-
-      # --------------------------------
-      # Upload Website
-      # --------------------------------
-      - name: Upload Website to Azure
-        working-directory: ${{ github.workspace }}
-        run: |
-          az storage blob upload-batch \
-            --account-name "${{ secrets.STORAGE_ACCOUNT_NAME }}" \
-            --auth-mode login \
-            --destination '$web' \
-            --source ./website \
-            --overwrite
-
-
-      # --------------------------------
-      # Get Website URL
-      # --------------------------------
-      - name: Get Website URL
+      - name: Show Website URL
         working-directory: terraform
         run: |
-          echo "===================================="
-          echo "Azure Static Website URL"
-          echo "===================================="
-
+          echo "======================================"
+          echo "AZURE STATIC WEBSITE"
+          echo "======================================"
           terraform output -raw static_website_url
