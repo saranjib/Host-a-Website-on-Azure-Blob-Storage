@@ -96,6 +96,11 @@ This project uses GitHub Actions OIDC authentication.
 
 Instead of storing a permanent Azure client secret, GitHub Actions obtains a short-lived identity token and authenticates with Microsoft Entra ID.
 
+```text
+Go to Azure Portal $\rightarrow$ Microsoft Entra ID $\rightarrow$ App registrations $\rightarrow$ Select your app.Navigate to Certificates & secrets $\rightarrow$ Federated credentials tab.Click Add credential and select GitHub Actions deploying Azure resources.Configure the parameters using the exact values from your log:FieldRequired Value (from your workflow logs)OrganizationsaranjibRepositoryHost-a-Website-on-Azure-Blob-StorageEntity TypeBranchGitHub branch namemainSubject Identifierrepo:saranjib/Host-a-Website-on-Azure-Blob-Storage:ref:refs/heads/mainAudienceapi://AzureADTokenExchange
+```
+
+
 Required GitHub repository secrets:
 
 ```text
