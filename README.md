@@ -187,6 +187,8 @@ terraform destroy
 
 This removes the Terraform-managed Azure resources.
 
+###### Note: Terraform needs a remote backend so Deploy and Destroy share the same state.
+
 ## 🎯 Learning Objectives
 
 After completing this project, you will understand:
