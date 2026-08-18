@@ -163,9 +163,21 @@ Open:
 ```text
 GitHub
 → Actions
-→ Destroy Azure Website Infrastructure
-→ Run workflow
+→ git add .github/workflows/destroy.yaml
+→ git commit -m "Add Terraform destroy workflow"
+→ git push origin main
 ```
+or 
+
+```text
+GitHub
+→ Actions
+→ git checkout -b destroy
+→ git add .github/workflows/destroy.yaml
+→ git commit -m "Add destroy workflow"
+→ git push origin destroy
+```
+
 
 The workflow executes:
 
