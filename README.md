@@ -103,12 +103,12 @@ Instead of storing a permanent Azure client secret, GitHub Actions obtains a sho
 4. Configure the parameters using the exact values from your log:
 
 Field	Required Value      (from your workflow logs)
-Organization	         saranjib
-Repository	               Host-a-Website-on-Azure-Blob-Storage
-Entity Type	               Branch
-GitHub branch name	   main
-Subject Identifier	   repo:saranjib/Host-a-Website-on-Azure-Blob-Storage:ref:refs/heads/main
-Audience	               api:
+Organization	           saranjib
+Repository	                 Host-a-Website-on-Azure-Blob-Storage
+Entity Type	                 Branch
+GitHub branch name	     main
+Subject Identifier	   
+Audience	             
 ```
 
 
