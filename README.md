@@ -97,7 +97,7 @@ This project uses GitHub Actions OIDC authentication.
 Instead of storing a permanent Azure client secret, GitHub Actions obtains a short-lived identity token and authenticates with Microsoft Entra ID.
 
 ```text
-1. Go to Azure Portal → ### Microsoft Entra ID → ### App registrations →  ### Select your app.
+1. Go to Azure Portal → **Microsoft Entra ID** →  **App registrations** →  **Select your app.**
 2. Navigate to ### Certificates & secrets → ### Federated credentials tab.
 3. Click → Add credential and select → ### GitHub Actions deploying Azure resources.
 4. Configure the parameters using the exact values from your log:
