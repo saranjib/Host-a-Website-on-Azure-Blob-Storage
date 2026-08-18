@@ -45,4 +45,4 @@ jobs:
       - name: Destroy Complete
         run: |
           echo "Azure infrastructure destroyed successfully." 
-          
+          echo "Resource Group: host-web-blob-project"
