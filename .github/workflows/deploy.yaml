@@ -54,7 +54,10 @@ jobs:
       - name: Show Website URL
         working-directory: terraform
         run: |
-          echo "======================================"
-          echo "AZURE STATIC WEBSITE"
-          echo "======================================"
-          terraform output -raw static_website_url
+          WEBSITE_URL=$(terraform output -raw static_website_url)
+
+          echo "=========================================="
+          echo "       AZURE STATIC WEBSITE DEPLOYED"
+          echo "=========================================="
+          echo "Website URL: $WEBSITE_URL"
+          echo "=========================================="

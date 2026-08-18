@@ -44,4 +44,5 @@ jobs:
 
       - name: Destroy Complete
         run: |
-          echo "Azure infrastructure destroyed successfully."
+          echo "Azure infrastructure destroyed successfully." 
+          
