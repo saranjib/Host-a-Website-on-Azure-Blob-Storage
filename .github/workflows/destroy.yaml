@@ -1,7 +1,9 @@
 name: Destroy Azure Website Infrastructure
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - destroy
 
 permissions:
   id-token: write
@@ -45,4 +47,4 @@ jobs:
       - name: Destroy Complete
         run: |
           echo "Azure infrastructure destroyed successfully." 
-          echo "Resource Group: host-web-blob-project"
+          
